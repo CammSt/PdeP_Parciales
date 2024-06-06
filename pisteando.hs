@@ -138,3 +138,7 @@ tourBuenosAires = Carrera {
 
 competidores :: [Auto]
 competidores = [ferrari, lamborghini, fiat]
+
+jugarCarrera :: Carrera -> [Auto] -> [[Auto]]
+jugarCarrera carrera autos = take (vueltas carrera + 1) $ iterate (peganLaVuelta (pista carrera)) autos
+-- se usa el take para frenar la ejecucion del iterate - tomando las primeras n vueltas 
