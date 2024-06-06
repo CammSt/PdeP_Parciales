@@ -16,6 +16,8 @@ data Universo = Universo {
     habitantes :: [Personaje]
 }
 
+-- type Universo = [Personaje]
+
 type Gema = Personaje -> Personaje
 type Habilidad = String
 type Planeta = String
@@ -35,6 +37,7 @@ edadMenorA edadLimite unPersonaje = edad unPersonaje < edadLimite
 
 esAptoParaPendex :: Universo -> Bool
 esAptoParaPendex unUniverso = any (edadMenorA 45) (habitantes unUniverso)
+-- esAptoParaPendex = any $ (<=45).edad
 
 sumarEnergiaPersonaje :: Personaje -> Float
 sumarEnergiaPersonaje unPersonaje
@@ -43,6 +46,8 @@ sumarEnergiaPersonaje unPersonaje
 
 energiaTotalUniverso :: Universo -> Float  
 energiaTotalUniverso unUniverso = sum (map sumarEnergiaPersonaje (habitantes unUniverso))
+-- energiaTotalDelUniverso unUniverso = sum.map energia.filter ((>1).length.habilidades) unUniverso
+
 
 ----------- MODIFICADORES DE PERSONAJE -----------
 
@@ -101,11 +106,14 @@ utilizar listaGemas enemigo = foldl (\enemigo gema -> gema enemigo) enemigo list
 
 --------------------------------------------------------------------------------------------
 
--- gemaMasPoderosa :: Guantelete -> Personaje -> Gema
--- gemaMasPoderosa unGuantelete unPersonaje = foldl ?? 
+gemaMasPoderosaDe :: Personaje -> [Gema] -> Gema
+gemaMasPoderosaDe _ [gema] = gema  -- si tiene una sola gema esa sera la mas poderosa
+gemaMasPoderosaDe personaje (gema1:gema2:gemas) 
+    | (energia.gema1) personaje < (energia.gema2) personaje = gemaMasPoderosaDe personaje (gema1:gemas)  -- si tiene mas de dos gemas compara de a dos y hace recursividad
+    | otherwise = gemaMasPoderosaDe personaje (gema2:gemas)
 
 --------------------------------------------------------------------------------------------
-
+ 
 infinitasGemas :: Gema -> [Gema]
 infinitasGemas gema = gema:(infinitasGemas gema)
 
@@ -120,6 +128,8 @@ usoLasTresPrimerasGemas guantelete = (utilizar . take 3. gemas) guantelete
         a) gemaMasPoderosa punisher guanteleteDeLocos
         No implementé la función gemaMasPoderosa, pero suponiendo que se resolviera con un foldl o foldr esta función no podrá ejecutarse porque necesitará
         evaluar cada una de las gemas para poder reconocer la más poderosa
+
+        Ahora que estpa resuelto se puede asegurar que no terminará de ejecutarse hasta haber comparado toda la lista de gemas
 
         b) usoLasTresPrimerasGemas guanteleteDeLocos punisher
         Debido a que Haskell implementa las funciones con el concepto de Lazy Evaluation, no necesita llegar al final del array para completar la funcionalidad,
