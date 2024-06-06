@@ -127,7 +127,7 @@ peganLaVuelta pista autos = foldl (\autos tramo -> map (pasaPorTramo tramo) auto
 
 data Carrera = Carrera {
     pista :: Pista,
-    vueltas :: Float
+    vueltas :: Int
 } deriving (Show)
 
 tourBuenosAires :: Carrera
@@ -138,4 +138,3 @@ tourBuenosAires = Carrera {
 
 competidores :: [Auto]
 competidores = [ferrari, lamborghini, fiat]
-
