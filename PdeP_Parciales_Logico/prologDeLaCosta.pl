@@ -169,6 +169,67 @@ tieneLaMayorCantidadDegiros(Giros) :-
     Finalmente, una atracción tranquila exclusiva para chicos también puede ser opción de entretenimiento para un visitante adulto en el caso en que en el grupo familiar haya un
     chico a quien acompañar.
 */
+/* falopa */
 
-% opcionDeEntretenimiento(Visitante, MesDeVisita) :-
-    
+/* opcionesDeEntretenimiento(Visitante, MesDeVisita) :-
+    visitante(Visitante),
+    mesDeApertura(MesDeVisita),
+    opcionesDeComida(Visitante),
+    opcionesDeAtracciones(Visitante).
+
+mesDeApertura(enero).
+mesDeApertura(febrero).
+mesDeApertura(marzo).
+mesDeApertura(abril).
+mesDeApertura(mayo).
+mesDeApertura(junio).
+mesDeApertura(julio).
+mesDeApertura(agosto).
+mesDeApertura(septiembre).
+mesDeApertura(octubre).
+mesDeApertura(noviembre).
+mesDeApertura(diciembre).
+
+opcionesDeComida(Visitante) :-
+    forall(comida(Comida, _), leAlcanza(Visitante, Comida)).
+
+opcionesDeAtracciones(Visitante) :-
+    opcionesDeAtraccionesTranquilas(Visitante),
+    opcionesDeAtraccionesIntensas(Visitante),
+    opcionesDeMontaniasRusas(Visitante),
+    opcionesDeAtraccionesAcuaticas(Visitante).
+
+opcionesDeAtraccionesTranquilas(Visitante) :-
+    forall(atraccion(Nombre, tranquila(Edades)), puedeAcceder(Visitante, Nombre, Edades)).
+
+opcionesDeAtraccionesIntensas(Visitante) :-
+    forall(atraccion(Nombre, intensa(Edades, _)), puedeAcceder(Visitante, Nombre, Edades)).
+
+opcionesDeMontaniasRusas(Visitante) :-
+    forall(atraccion(Nombre, montaniaRusa(_, _)), puedeAcceder(Visitante, Nombre, _)).
+
+opcionesDeAtraccionesAcuaticas(Visitante) :-
+    forall(atraccion(Nombre, acuatica), puedeAcceder(Visitante, Nombre, _)).
+
+puedeAcceder(Visitante, NombreAtraccion, Edades) :-
+    visitante(Visitante, superficial(Edad, _), _),
+    member(Edad, Edades),
+    not(esPeligrosa(Visitante, NombreAtraccion)).
+
+esPeligrosa(Visitante, NombreAtraccion) :-
+    atraccion(NombreAtraccion, montaniaRusa(Giros, Duracion)),
+    esPeligrosa(Giros, Duracion, Visitante).
+
+esPeligrosa(Visitante, NombreAtraccion) :-
+    atraccion(NombreAtraccion, intensa(_, _)),
+    esPeligrosa(0, 0, Visitante).
+
+esPeligrosa(Visitante, NombreAtraccion) :-
+    atraccion(NombreAtraccion, tranquila(_)),
+    not(puedeAcceder(Visitante, NombreAtraccion, _)),
+    tieneUnChicoEnElGrupo(Visitante).
+
+tieneUnChicoEnElGrupo(Visitante) :-
+    grupo(_, Visitante),
+    forall(grupo(_, OtroVisitante), not(esChico(OtroVisitante))).
+     */
