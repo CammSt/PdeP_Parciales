@@ -67,10 +67,6 @@ popular(NombreJuego) :-
 /* 3) Un usuario puede ser adicto a los descuentos, si todo lo que planea adquirir tiene un descuento de al menos 50%; puede ser fanático de un género si tiene al menos dos juegos de ese género; 
 o puede ser monotemático de un género si todos los juegos que posee son de ese género. */
 
-% usuario(Nombre).
-% posee(Nombre, NombreJuego).
-% planeaAdquirir(Nombre, NombreJuego).
-
 usuario(romina).
 usuario(martin).
 usuario(juan).
