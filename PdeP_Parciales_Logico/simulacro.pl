@@ -118,6 +118,12 @@ cantidadDeJuegosDeGeneroAdquiridos(Usuario, Genero, Cantidad) :-
     include(juegoDeGenero(Genero), JuegosPoseidos, JuegosDeGenero),
     length(JuegosDeGenero, Cantidad).
 
+/* cantidadDeJuegosDeGeneroAdquiridos(Usuario, Genero, Cantidad) :-
+    usuario(Usuario), juegoDeGenero(Genero, _),
+    posee(Usuario, JuegosPoseidos),
+    findall(NombreJuego, (member(NombreJuego, JuegosPoseidos), juegoDeGenero(Genero, NombreJuego)), JuegosDeGenero),
+    length(JuegosDeGenero, Cantidad).
+ */
 /* --------------------------------------------------------------------------------------- */
 
 /* 4) Dos usuarios son buenos amigos si entre sus futuras adquisiciones piensan regalarse juegos populares mutuamente.*/
