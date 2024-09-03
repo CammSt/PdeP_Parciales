@@ -7,6 +7,9 @@ jockey(lezcano,    149, 50).
 jockey(baratucci,  153, 55).
 jockey(falero,     157, 52).
 
+%% CORRECCION -- armar un generador para evitar tantos _ en las consultas
+jockey(NombreJockey) :- jockey(NombreJockey, _, _).
+
 % caballo(Nombre).
 caballo(botafogo).
 caballo(oldMan).
@@ -54,7 +57,15 @@ premio(matBoy,   granPremioCriadores).
 
 /* 2) Para mí, para vos */
 
-prefierenMasDeUnJockey(NombreCaballo) :-
+% CORRECCION - Para buscar si hay más de un elemento que cumpla una condición, no hace falta usar findall, es preferible encontrar dos y que sean distintos (\=)
+
+prefiereMasDeUnJockey(NombreCaballo) :-
+    caballo(NombreCaballo),
+    preferencia(NombreCaballo, Jockey),
+    preferencia(NombreCaballo, OtroJockey),
+    Jockey \= OtroJockey.
+
+/* prefiereMasDeUnJockey(NombreCaballo) :-
     caballo(NombreCaballo),
     findall(
         NombreJockey,
@@ -62,7 +73,7 @@ prefierenMasDeUnJockey(NombreCaballo) :-
         ListaPreferencias
     ),
     length(ListaPreferencias, CantidadPreferencias),
-    CantidadPreferencias > 1.
+    CantidadPreferencias > 1. */
     
 /* 3) No se llama Amor */
 
@@ -83,10 +94,16 @@ premioImportante(granPremioRepublica).
 piolin(NombreJockey) :-
     jockey(NombreJockey, _, _),
     forall(
-        (premio(NombreCaballo, Premio),
-        premioImportante(Premio)),
+        /* (premio(NombreCaballo, Premio),
+        premioImportante(Premio)) */
+        caballoImportante(NombreCaballo) ,
         preferencia(NombreCaballo, NombreJockey)
     ).
+
+%CORRECCION - delegar el primer parámetro del forall
+caballoImportante(NombreCaballo) :-
+    premio(NombreCaballo, Premio),
+    premioImportante(Premio).
 
 /* 5) El jugador */
 
@@ -108,13 +125,15 @@ apuesta(exacta, Caballo1, Caballo2) :-
     resultado(Caballo2, 2).
 
 apuesta(imperfecta, Caballo1, Caballo2) :-
-    (resultado(Caballo1, 1), resultado(Caballo2, 2));
-    (resultado(Caballo2, 1), resultado(Caballo1, 2)).
+    apuesta(exacta, Caballo1, Caballo2);
+    apuesta(exacta, Caballo2, Caballo1).
 
 
 /* 6) Los colores */
 
-color(botafogo, tordo,    negro).
+% CORRECCION - esta resolucion tiene complicaciones cuando se quiere filtrar por el color (tordo, alazan, etc.)
+
+/* color(botafogo, tordo,    negro).
 color(oldMan,   alazan,   marron).
 color(energica, ratonero, gris).
 color(energica, ratonero, negro).
@@ -132,4 +151,49 @@ combinar([], []).
 combinar([Caballo|ColaCaballos], [Caballo|Caballos]) :-
     combinar(ColaCaballos, Caballos).
 combinar([_|ColaCaballos], Caballos) :-
+    combinar(ColaCaballos, Caballos).
+ */
+
+
+color(tordo).
+color(alazan).
+color(ratonero).
+color(palomino).
+color(pinto).
+
+tonalidades(tordo,    negro).
+tonalidades(alazan,   marron).
+tonalidades(ratonero, gris).
+tonalidades(ratonero, negro).
+tonalidades(palomino, marron).
+tonalidades(palomino, negro).
+tonalidades(pinto,    blanco).
+tonalidades(pinto,    marron).
+
+caballoDeColor(botafogo, tordo).
+caballoDeColor(oldMan, alazan).
+caballoDeColor(energica, ratonero).
+caballoDeColor(matBoy, palomino).
+caballoDeColor(yatasto, pinto).
+
+
+preferenciaDe(Color, Caballos) :-  % FILTRA POR COLOR TORDO, ALAZAN, RATONERO, PALOMINO, PINTO
+    color(Color),
+    findall(Caballo, caballoDeColor(Caballo, Color), Colores),
+    combinar(Colores, Caballos).
+
+preferenciaDe(Tono, Caballos) :- % FILTRA POR COLOR NEGRO, MARRON, GRIS, BLANCO
+    not(color(Tono)),
+    findall(Caballo, tieneTonalidad(Caballo, Tono), Colores),
+    combinar(Colores, Caballos).
+
+tieneTonalidad(Caballo, Tono) :-
+    caballoDeColor(Caballo, Color),
+    tonalidades(Color, Tono).
+    
+
+combinar([], []).
+combinar([ Caballo | ColaCaballos ], [ Caballo | Caballos ]) :-
+    combinar(ColaCaballos, Caballos).
+combinar([ _ | ColaCaballos ], Caballos) :-
     combinar(ColaCaballos, Caballos).
