@@ -193,7 +193,115 @@ tieneTonalidad(Caballo, Tono) :-
     
 
 combinar([], []).
-combinar([ Caballo | ColaCaballos ], [ Caballo | Caballos ]) :-
+
+combinar([ Caballo | ColaCaballos ], [ Caballo | Caballos ]) :-  % incluye el primer elemento
     combinar(ColaCaballos, Caballos).
-combinar([ _ | ColaCaballos ], Caballos) :-
+
+combinar([ _ | ColaCaballos ], Caballos) :- % omite el primer elemento
     combinar(ColaCaballos, Caballos).
+
+/* 
+[botafogo, energica, matBoy]
+
+Caballos = [botafogo, energica, matBoy] ;
+Caballos = [botafogo, energica] ;
+Caballos = [botafogo, matBoy] ;
+Caballos = [botafogo] ;
+Caballos = [energica, matBoy] ;
+Caballos = [energica] ;
+Caballos = [matBoy] ;
+Caballos = [].
+
+
+PRIMERA COMBINACION
+
+Caballos = [ Caballos3 | Caballos2 | Caballos1 | Caballos ]
+
+1)  combinar([botafogo, energica, matBoy], Caballos) -> Caballos = [botafogo | Caballos1] = [botafogo, energica, matBoy]
+    Caballo       = botafogo
+
+2)  combinar([energica, matBoy], Caballos1) -> Caballos1 = [energica | Caballos2] = [energica, matBoy]
+    Caballo       = energica
+
+3) combinar([matBoy], Caballos2) -> Caballos2 = [matBoy | Caballos3] = [matBoy]
+    Caballo       = matBoy
+
+4) combinar([], Caballos3) -> Caballos3 = [] vuelve al paso 3
+
+
+SEGUNDA COMBINACION
+
+Caballos = [ Caballos2 | Caballos1 | Caballos ]
+
+1)  combinar([botafogo, energica], Caballos) -> Caballos = [botafogo | Caballos1] = [botafogo, energica]
+    Caballo       = botafogo
+
+2)  combinar([energica], Caballos1) -> Caballos1 = [energica | Caballos2] = [energica]
+    Caballo       = energica
+
+3) combinar([], Caballos2) -> Caballos2 = [] vuelve al paso 2
+
+
+TERCERA COMBINACION
+
+Caballos = [ Caballos2 | Caballos1 | Caballos ]
+
+1)  combinar([botafogo, matBoy], Caballos) -> Caballos = [botafogo | Caballos1] = [botafogo, matBoy]
+    Caballo       = botafogo
+
+2)  combinar([matBoy], Caballos1) -> Caballos1 = [matBoy | Caballos2] = [matBoy]
+    Caballo       = matBoy
+
+3) combinar([], Caballos2) -> Caballos2 = [] vuelve al paso 2
+
+
+CUARTA COMBINACION
+
+Caballos = [ Caballos1 | Caballos ]
+
+1)  combinar([botafogo], Caballos) -> Caballos = [botafogo | Caballos1] = [botafogo]
+    Caballo       = botafogo
+
+2) combinar([], Caballos1) -> Caballos1 = [] vuelve al paso 1
+
+
+QUINTA COMBINACION
+
+Caballos = [ Caballos2 | Caballos1 | Caballos ]
+
+1)  combinar([energica, matBoy], Caballos) -> Caballos = [energica | Caballos1] = [energica, matBoy]
+    Caballo       = energica
+
+2)  combinar([matBoy], Caballos1) -> Caballos1 = [matBoy | Caballos2] = [matBoy]
+    Caballo       = matBoy
+
+3) combinar([], Caballos2) -> Caballos2 = [] vuelve al paso 2
+
+
+SEXTA COMBINACION
+
+Caballos = [ Caballos1 | Caballos ]
+
+1)  combinar([energica], Caballos) -> Caballos = [energica | Caballos1] = [energica]
+    Caballo       = energica
+
+2) combinar([], Caballos1) -> Caballos1 = [] vuelve al paso 1
+
+
+SEPTIMA COMBINACION
+
+Caballos = [ Caballos1 | Caballos ]
+
+1)  combinar([matBoy], Caballos) -> Caballos = [matBoy | Caballos1] = [matBoy]
+    Caballo       = matBoy
+
+2) combinar([], Caballos1) -> Caballos1 = [] vuelve al paso 1
+
+
+OCTAVA COMBINACION
+
+Caballos = [ Caballos1 | Caballos ]
+
+1)  combinar([],  []) -> Caballos = [] = []
+
+ */
