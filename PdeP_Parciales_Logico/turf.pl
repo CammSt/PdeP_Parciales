@@ -179,13 +179,13 @@ caballoDeColor(yatasto, pinto).
 
 preferenciaDe(Color, Caballos) :-  % FILTRA POR COLOR TORDO, ALAZAN, RATONERO, PALOMINO, PINTO
     color(Color),
-    findall(Caballo, caballoDeColor(Caballo, Color), Colores),
-    combinar(Colores, Caballos).
+    findall(Caballo, caballoDeColor(Caballo, Color), CaballosDeColor),
+    combinar(CaballosDeColor, Caballos).
 
 preferenciaDe(Tono, Caballos) :- % FILTRA POR COLOR NEGRO, MARRON, GRIS, BLANCO
     not(color(Tono)),
-    findall(Caballo, tieneTonalidad(Caballo, Tono), Colores),
-    combinar(Colores, Caballos).
+    findall(Caballo, tieneTonalidad(Caballo, Tono), CaballosDeColor),
+    combinar(CaballosDeColor, Caballos).
 
 tieneTonalidad(Caballo, Tono) :-
     caballoDeColor(Caballo, Color),
