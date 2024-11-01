@@ -1,0 +1,105 @@
+import Expedicion.*
+import Vikingo.*
+import Castas.*
+import Ocupaciones.*
+import Aldea.*
+import Capital.*
+
+describe "Armar expediciones" {
+  test "Subir un vikingo a una expedición" {
+    const casta = new Karl()
+    const ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100)
+    const vikingo = new Vikingo(casta = casta, ocupacion = ocupacion, dinero = 0)
+
+    assert.that(vikingo.puedeSubir())
+  }
+
+  test "Subir vikingo a una expedición, pero se lo rechaza" {
+    const casta = new Jarl(armas = 2)
+    const ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100)
+    const vikingo = new Vikingo(casta = casta, ocupacion = ocupacion, dinero = 0)
+
+    assert.throwsException({vikingo.puedeSubir()})
+  }
+}
+
+describe "Expediciones que valen la pena" {
+
+  const vikingo1 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo2 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo3 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo4 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo5 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo6 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo7 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo8 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo9 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo10 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+
+  const vikingosExpedicion1 = [vikingo1, vikingo2, vikingo3, vikingo4, vikingo5, vikingo6, vikingo7, vikingo8, vikingo9, vikingo10]
+  const vikingosExpedicion2 = [vikingo1, vikingo2, vikingo3, vikingo4, vikingo5, vikingo6, vikingo7, vikingo8]
+
+  test "Expedición vale la pena" {
+    const aldeaValeLaPena = new Aldea(crucifijosEnIglesias = 150)
+    const capitalValeLaPena = new Capital(defensores = 2, factorDeRiqueza = 10)
+    const expedicion = new Expedicion(objetivosInvolucrados = [aldeaValeLaPena, capitalValeLaPena], vikingos = vikingosExpedicion1)
+
+    assert.that(expedicion.valeLaPena())
+  }
+
+  test "Expedición no vale la pena" {
+    const aldeaNoValeLaPena = new Aldea(crucifijosEnIglesias = 2)
+    const expedicion = new Expedicion(objetivosInvolucrados = [aldeaNoValeLaPena], vikingos = vikingosExpedicion2)
+
+    assert.notThat(expedicion.valeLaPena())
+  }
+}
+
+describe "Realizar una expedición" {
+
+  const vikingo1 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo2 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo3 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo4 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo5 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo6 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo7 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo8 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo9 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+  const vikingo10 = new Vikingo(casta = new Karl(), ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100), dinero = 0)
+
+  const vikingosExpedicion1 = [vikingo1, vikingo2, vikingo3, vikingo4, vikingo5, vikingo6, vikingo7, vikingo8, vikingo9, vikingo10]
+
+  test "Realizar una expedición" {
+    const aldea = new Aldea(crucifijosEnIglesias = 150)
+    const capital = new Capital(defensores = 2, factorDeRiqueza = 10)
+    const expedicion = new Expedicion(objetivosInvolucrados = [aldea, capital], vikingos = vikingosExpedicion1)
+
+    expedicion.realizar()
+
+    assert.equals(25, vikingo1.dinero())  // son 10 vikingos, el botin es de 250 monedas
+  }
+}
+
+
+describe "Ascenso social" {
+  test "Ragnar pasa de ser Karl a ser Thrall" {
+    const casta = new Karl()
+    const ocupacion = new Granjero(cantidadHijos = 1, hectareas = 100)
+    const vikingo = new Vikingo(casta = casta, ocupacion = ocupacion, dinero = 0)
+
+    const hectareasAntes = ocupacion.hectareas()
+    vikingo.escalarSocialmente()
+
+    const nuevaOcupacion = vikingo.ocupacion()
+    assert.equals(102, nuevaOcupacion.hectareas())
+  }
+}
+
+/* PREGUNTA TEORICA */
+
+/* 
+  Si se agregaran los castillos como nuevo posible objetivo, pueden agregarse sin modificar el códgio ya existente, tan solo se debería agregar una nueva clase Castillo,
+  que sea polimórfica con respecto a Alde y Capital, y que implemente el método valeLaPena(vikingos) y atacado(vikingos) de la misma forma que las otras dos clases.
+*/
+
