@@ -1,0 +1,91 @@
+import Actividades.*
+import Deportes.*
+import Filosofo.*
+import Discusion.*
+import Argumento.*
+import Naturalezas.*
+
+describe "Tests de Filosofo - Punto 1 y 2" {
+  test "Diógenes se presenta" {
+    const diogenes = new Filosofo(nombre = "Diogenes", dias = 21170, actividades = [], honorificos = ["El Cínico"], nivelIluminacion = 0) 
+    assert.equals("Hola, mi nombre es Diogenes, El Cínico",  diogenes.presentarse())
+  }
+
+  test "Confucio se presenta" {
+    const confucio = new Filosofo(nombre = "Confucio", dias = 21170, actividades = [], honorificos = ["El Sabio", "El Maestro"], nivelIluminacion = 0) 
+    assert.equals("Hola, mi nombre es Confucio, El Sabio, El Maestro",  confucio.presentarse())
+  }
+
+  test "Un filosofo está en lo correcto" {
+    const diogenes = new Filosofo(nombre = "Diogenes", dias = 21170, actividades = [], honorificos = ["El Cínico"], nivelIluminacion = 2000)
+    assert.that(diogenes.estaEnLoCorrecto()) 
+  }
+
+  test "Un filosofo no está en lo correcto" {
+    const confucio = new Filosofo(nombre = "Confucio", dias = 21170, actividades = [], honorificos = ["El Sabio", "El Maestro"], nivelIluminacion = 0) 
+    assert.notThat(confucio.estaEnLoCorrecto()) 
+  }
+}
+
+describe "Tests de Filosofo - Punto 3" {
+
+  const filosofoCompania = new Filosofo(nombre = "Pedro", dias = 21170, actividades = [], honorificos = [], nivelIluminacion = 10)
+
+  const tomarVino = new TomarVino()
+  const juntarseEnElAgora = new JuntarseEnElAgora(compania = filosofoCompania)
+  const admirarPaisaje = new AdmirarPaisaje()
+  const meditarBajoUnaCascada = new MeditarBajoUnaCascada(metros = 5)
+  const practicarDeporte = new PracticarDeporte(deporte = new Futbol())
+
+  test "Un filosofo vive un día" {
+    const diogenes = new Filosofo( nombre = "Diogenes", dias = 21535, 
+      actividades = [tomarVino, admirarPaisaje], 
+      honorificos = ["El Cínico"], 
+      nivelIluminacion = 2000
+    )
+
+    diogenes.vivirUnDia()
+    assert.equals(1990 ,diogenes.nivelIluminacion())
+  }
+
+  test "Un filosofo vive un día, cumple años y se convierte en sabio" {
+    const diogenes = new Filosofo( nombre = "Diogenes", dias = 21899, // edad = 59 - 21900 son 60 años
+      actividades = [tomarVino, admirarPaisaje], 
+      honorificos = ["El Cínico"], 
+      nivelIluminacion = 2000
+    )
+
+    diogenes.vivirUnDia()
+    assert.that(diogenes.honorificos().contains("El Sabio"))
+  }
+}
+
+describe "Tests de Filosofo - Punto 4, 5 y 6" {
+  test "Saber si un argumento es enriquecedor" {
+    const argumento = new Argumento(descripcion = "El vino es bueno", naturalezas = [estoica, moralista])
+    assert.that(argumento.esEnriquecedor())
+  }
+
+  test "Saber si una discusión es buena" {
+    const argumento1 = new Argumento(descripcion = "El vino es bueno", naturalezas = [estoica, moralista])
+    const argumento2 = new Argumento(descripcion = "El vino es malo", naturalezas = [estoica, moralista])
+
+    const partido1 = new Partido(filosofo = new Filosofo(nombre = "Diogenes", dias = 21170, actividades = [], honorificos = ["El Cínico"], nivelIluminacion = 2000), argumentos = [argumento1])
+    const partido2 = new Partido(filosofo = new Filosofo(nombre = "Confucio", dias = 21170, actividades = [], honorificos = ["El Sabio", "El Maestro"], nivelIluminacion = 1500), argumentos = [argumento2])
+   
+    const discusion = new Discusion(partido1 = partido1, partido2 = partido2)
+    
+    assert.that(discusion.esBuena())
+  }
+
+  test "Filosofo contemporaneo se presenta" {
+    const filosofoContemporaneo = new FilosofoContemporaneo(nombre = "Diogenes", dias = 21170, actividades = [], honorificos = ["El Cínico"], nivelIluminacion = 2000, amanteDeLaBotanica = true)
+    assert.equals("Hola", filosofoContemporaneo.presentarse())
+  }
+
+  test "Filosofo contemporaneo es amante de la botanica" {
+    const filosofoContemporaneo = new FilosofoContemporaneo(nombre = "Diogenes", dias = 21170, actividades = [new AdmirarPaisaje()], honorificos = ["El Cínico"], nivelIluminacion = 2000, amanteDeLaBotanica = true)
+    assert.equals(2000 * 5, filosofoContemporaneo.nivelIluminacion())
+    
+  }
+}
